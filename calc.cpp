@@ -1,5 +1,7 @@
 #include <iostream>
+#include "utility.h"
 #include "calc.h"
+
 
 using namespace std;
 
@@ -69,10 +71,66 @@ Uses: The class Stack.
             if (numbers.push(q + p) == overflow)
                cout << "Warning: Stack full, lost result" << endl;
          }
+         cout << numbers.push(q+p);
       }
       break;
 
-   //   Add options for further user commands.
+    case '-':
+      if (numbers.top(p) == underflow)
+        cout << "Stack empty" << endl;
+      else {
+        numbers.pop();
+        if (numbers.top(q) == underflow) {
+            cout << "STack has only one entry" << endl;
+            numbers.push(p);
+        }
+
+        else {
+            numbers.pop();
+            if (numbers.push(q - p) == overflow) 
+                cout << "Warning: Stack full, lost result" << endl;
+            
+        }
+      }
+      break;
+
+      case '*':
+      if (numbers.top(p) == underflow)
+        cout << "Stack empty" << endl;
+      else {
+        numbers.pop();
+        if (numbers.top(q) == underflow) {
+            cout << "STack has only one entry" << endl;
+            numbers.push(p);
+        }
+
+        else {
+            numbers.pop();
+            if (numbers.push(q * p) == overflow) 
+                cout << "Warning: Stack full, lost result" << endl;
+            
+        }
+      }
+      break;
+
+            case '/':
+      if (numbers.top(p) == underflow)
+        cout << "Stack empty" << endl;
+      else {
+        numbers.pop();
+        if (numbers.top(q) == underflow) {
+            cout << "STack has only one entry" << endl;
+            numbers.push(p);
+        }
+
+        else {
+            numbers.pop();
+            if (numbers.push(q / p) == overflow) 
+                cout << "Warning: Stack full, lost result" << endl;
+            
+        }
+      }
+      break;
 
     case 'q':
       cout << "Calculation finished.\n";
@@ -80,3 +138,33 @@ Uses: The class Stack.
    }
    return true;
 }
+
+Stack::Stack() {
+    count = 0;
+}
+
+bool Stack::empty() const {
+    return count == 0;
+}
+
+Error_code Stack::push(const Stack_entry &item) {
+    if (count >= maxstack)
+        return Error_code::overflow;
+    entry[count++] = item;
+    return Error_code::success;
+}
+
+Error_code Stack::pop() {
+    if (count == 0)
+        return Error_code::underflow;
+    --count;
+    return Error_code::success;
+}
+
+Error_code Stack::top(Stack_entry &item) const {
+    if (count == 0)
+        return Error_code::underflow;
+    item = entry[count - 1];
+    return Error_code::success;
+}
+
