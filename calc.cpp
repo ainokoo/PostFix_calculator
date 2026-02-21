@@ -16,7 +16,7 @@ char get_command()
       command = tolower(command);
       if (command == '?' || command == '=' || command == '+' ||
           command == '-' || command == '*' || command == '/' ||
-          command == 'q' || command == 'x' ) waiting = false;
+          command == 'q' || command == 'x' || command == 's' ) waiting = false;
 
 
       else {
@@ -25,6 +25,7 @@ char get_command()
               << "[+] [-] [*] [/]   are arithmetic operations" << endl
               << "If you want to change the order of the calculated numbers, " << endl
               << "enter [x] before arithmetic operator. " << endl
+              << "You can also get the total value of the stack calculated to a single number by entering [s]" << endl
               << "[Q]uit." << endl;
       }
    }
@@ -42,13 +43,28 @@ Uses: The class Stack.
 */
 
 {
-   double p, q;
-   switch (command) {
+double p, q;
+double total = 0;
 
-   case 'x': //ota pois, laita uudestaan
-     if (numbers.top(p) == underflow) {
+switch (command) {
+
+    case 's': // kaikki stackin luvut yhteen
+
+ 
+
+    while (!numbers.empty()) {
+        numbers.top(p);
+        total += p;
+        numbers.pop();
+    }
+    numbers.push(total);
+
+    break;
+
+    case 'x': //ota pois, laita uudestaan
+        if (numbers.top(p) == underflow) {
         cout << "Stack empty" << endl;
-     } else {
+        } else {
           numbers.pop();
           if (numbers.top(q) == underflow) {
             cout << "Stack has only one entry" << endl;
@@ -62,33 +78,33 @@ Uses: The class Stack.
           }
         }
 
-   break;
+    break;
 
-   case '?':
+    case '?':
       cout << "Enter a real number: " << flush;
       cin >> p;
-      if (numbers.push(p) == overflow)
-         cout << "Warning: Stack full, lost number" << endl;
-      break;
+        if (numbers.push(p) == overflow)
+            cout << "Warning: Stack full, lost number" << endl;
+    break;
 
-   case '=':
-      if (numbers.top(p) == underflow)
-         cout << "Stack empty" << endl;
-      else
-         cout << p << endl;
-      break;
+    case '=':
+        if (numbers.top(p) == underflow)
+            cout << "Stack empty" << endl;
+        else
+            cout << p << endl;
+    break;
 
-   case '+':
-      if (numbers.top(p) == underflow)
-         cout << "Stack empty" << endl;
-      else {
-         numbers.pop();
-         if (numbers.top(q) == underflow) {
-            cout << "Stack has just one entry" << endl;
-            numbers.push(p);
+    case '+':
+        if (numbers.top(p) == underflow)
+            cout << "Stack empty" << endl;
+        else {
+            numbers.pop();
+            if (numbers.top(q) == underflow) {
+                cout << "Stack has just one entry" << endl;
+                numbers.push(p);
          }
 
-         else {
+        else {
             numbers.pop();
             if (numbers.push(q + p) == overflow)
                cout << "Warning: Stack full, lost result" << endl;
@@ -97,13 +113,13 @@ Uses: The class Stack.
       break;
 
     case '-':
-      if (numbers.top(p) == underflow)
-        cout << "Stack empty" << endl;
-      else {
-        numbers.pop();
-        if (numbers.top(q) == underflow) {
-            cout << "Stack has only one entry" << endl;
-            numbers.push(p);
+        if (numbers.top(p) == underflow)
+            cout << "Stack empty" << endl;
+        else {
+            numbers.pop();
+            if (numbers.top(q) == underflow) {
+                cout << "Stack has only one entry" << endl;
+                numbers.push(p);
         }
 
         else {
@@ -113,16 +129,16 @@ Uses: The class Stack.
             
         }
       }
-      break;
+    break;
 
-      case '*':
-      if (numbers.top(p) == underflow)
-        cout << "Stack empty" << endl;
-      else {
-        numbers.pop();
-        if (numbers.top(q) == underflow) {
-            cout << "Stack has only one entry" << endl;
-            numbers.push(p);
+    case '*':
+        if (numbers.top(p) == underflow)
+            cout << "Stack empty" << endl;
+         else {
+            numbers.pop();
+            if (numbers.top(q) == underflow) {
+                cout << "Stack has only one entry" << endl;
+                numbers.push(p);
         }
 
         else {
@@ -132,16 +148,16 @@ Uses: The class Stack.
             
         }
       }
-      break;
+    break;
 
-            case '/':
-      if (numbers.top(p) == underflow)
-        cout << "Stack empty" << endl;
-      else {
-        numbers.pop();
-        if (numbers.top(q) == underflow) {
-            cout << "Stack has only one entry" << endl;
-            numbers.push(p);
+    case '/':
+        if (numbers.top(p) == underflow)
+            cout << "Stack empty" << endl;
+        else {
+            numbers.pop();
+            if (numbers.top(q) == underflow) {
+                cout << "Stack has only one entry" << endl;
+                numbers.push(p);
         }
 
         else {
@@ -151,7 +167,7 @@ Uses: The class Stack.
             
         }
       }
-      break;
+    break;
 
     case 'q':
       cout << "Calculation finished.\n";
